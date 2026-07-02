@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNTIL — Member Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#020417;--bone:#f5f1ea;--cream:#ede6d8;--stone:#d9d2c2;
+  --clay:#c9a98a;--gold:#b89968;--rust:#b8623a;--moss:#5a6b4a;
+  --navy-700:#131c4d;--navy-600:#1f2a66;
+  --fd:'Barlow Condensed',sans-serif;
+  --fb:'DM Sans',sans-serif;
+  --border:rgba(2,4,23,0.1);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--fb);background:var(--bone);color:var(--navy);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden
+}
+
+/* ── TOPBAR ─────────────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:80;
+  background:rgba(245,241,234,0.9);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:56px
+}
+.topbar-logo{
+  font-family:var(--fd);font-weight:700;font-size:1.3rem;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);
+  text-decoration:none
+}
+.topbar-nav{display:flex;gap:0.25rem}
+.topbar-nav a{
+  font-size:0.72rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  color:rgba(2,4,23,0.5);text-decoration:none;padding:0.4rem 0.75rem;
+  border-radius:6px;transition:all 0.15s;white-space:nowrap
+}
+.topbar-nav a:hover{background:rgba(2,4,23,0.06);color:var(--navy)}
+.topbar-club{
+  font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--navy);color:var(--bone);
+  padding:0.35rem 0.85rem;border-radius:20px
+}
+
+/* ── HERO ──────────────────────────────────── */
+.hero{
+  background:var(--navy);
+  padding:4rem 2rem 3.5rem;
+  position:relative;overflow:hidden
+}
+.hero::before{
+  content:'UNTIL';
+  position:absolute;right:-2rem;top:50%;transform:translateY(-50%);
+  font-family:var(--fd);font-weight:900;font-size:min(28vw,22rem);
+  color:rgba(245,241,234,0.03);letter-spacing:-0.02em;line-height:1;
+  pointer-events:none;user-select:none
+}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative}
+.hero-eyebrow{
+  font-size:0.65rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--clay);margin-bottom:1rem
+}
+.hero-title{
+  font-family:var(--fd);font-weight:800;font-size:clamp(3rem,7vw,6rem);
+  text-transform:uppercase;line-height:0.92;color:var(--bone);margin-bottom:1.5rem
+}
+.hero-title em{color:var(--clay);font-style:normal}
+.hero-desc{
+  font-size:clamp(0.88rem,1.5vw,1rem);color:rgba(245,241,234,0.6);
+  line-height:1.65;max-width:500px;margin-bottom:2rem
+}
+.hero-pills{display:flex;flex-wrap:wrap;gap:0.5rem}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  background:rgba(245,241,234,0.08);border:1px solid rgba(245,241,234,0.15);
+  border-radius:20px;padding:0.3rem 0.85rem;
+  font-size:0.72rem;color:rgba(245,241,234,0.7)
+}
+.hero-pill strong{color:var(--bone)}
+
+/* ── QUICK ACTIONS ─────────────────────────── */
+.quick{background:var(--cream);border-bottom:1px solid var(--stone)}
+.quick-inner{
+  max-width:1200px;margin:0 auto;padding:1.5rem 2rem;
+  display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center
+}
+.quick-label{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(2,4,23,0.4);margin-right:0.25rem;white-space:nowrap
+}
+.qa{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.5rem 1rem;border-radius:8px;
+  font-size:0.78rem;font-weight:500;text-decoration:none;
+  border:1.5px solid var(--border);background:#fff;color:var(--navy);
+  transition:all 0.18s;white-space:nowrap
+}
+.qa:hover{border-color:var(--navy);background:var(--navy);color:var(--bone)}
+.qa-primary{background:var(--navy);color:var(--bone);border-color:var(--navy)}
+.qa-primary:hover{background:var(--navy-700)}
+.qa-icon{font-size:0.9rem}
+
+/* ── MAIN LAYOUT ───────────────────────────── */
+.main{max-width:1200px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}
+@media(max-width:900px){.main{grid-template-columns:1fr}}
+
+/* ── SECTION HEADINGS ──────────────────────── */
+.section-head{
+  display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;
+  padding-bottom:0.75rem;border-bottom:1.5px solid var(--border)
+}
+.section-title{font-family:var(--fd);font-weight:700;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.02em}
+.section-count{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(2,4,23,0.35)}
+.module{margin-bottom:2.5rem}
+
+/* ── FAQ ────────────────────────────────────── */
+.faq-item{
+  border-bottom:1px solid var(--border);
+}
+.faq-q{
+  width:100%;background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;padding:1rem 0;text-align:left
+}
+.faq-q-text{font-size:0.9rem;font-weight:500;color:var(--navy);line-height:1.4;flex:1}
+.faq-icon{
+  width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:0.75rem;color:rgba(2,4,23,0.4);transition:all 0.2s
+}
+.faq-item.open .faq-icon{background:var(--navy);border-color:var(--navy);color:var(--bone);transform:rotate(45deg)}
+.faq-a{
+  display:none;padding:0 0 1rem;
+  font-size:0.84rem;color:rgba(2,4,23,0.65);line-height:1.7
+}
+.faq-item.open .faq-a{display:block}
+.faq-a a{color:var(--navy);font-weight:500}
+.faq-tag{
+  display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;margin-right:0.5rem;vertical-align:middle
+}
+.tag-app{background:rgba(2,4,23,0.08);color:rgba(2,4,23,0.5)}
+.tag-billing{background:rgba(184,98,58,0.12);color:var(--rust)}
+.tag-space{background:rgba(90,107,74,0.12);color:var(--moss)}
+.tag-community{background:rgba(201,169,138,0.2);color:#8a6540}
+
+/* ── NEWSLETTERS ────────────────────────────── */
+.newsletter-card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;transition:box-shadow 0.2s;margin-bottom:0.85rem
+}
+.newsletter-card:hover{box-shadow:0 8px 24px rgba(2,4,23,0.08)}
+.newsletter-card-inner{display:flex;align-items:stretch}
+.newsletter-date-block{
+  background:var(--navy);padding:1.1rem 1rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:64px;text-align:center
+}
+.nl-month{font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--clay)}
+.nl-day{font-family:var(--fd);font-size:2rem;font-weight:800;color:var(--bone);line-height:1}
+.nl-year{font-size:0.6rem;color:rgba(245,241,234,0.4);margin-top:2px}
+.newsletter-body{padding:0.85rem 1rem;flex:1}
+.newsletter-title{font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:0.3rem;line-height:1.4}
+.newsletter-preview{font-size:0.76rem;color:rgba(2,4,23,0.55);line-height:1.5;margin-bottom:0.6rem}
+.newsletter-link{
+  font-size:0.7rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--navy);text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem
+}
+.newsletter-link:hover{color:var(--clay)}
+.newsletter-placeholder{
+  background:rgba(2,4,23,0.03);border:1.5px dashed rgba(2,4,23,0.1);
+  border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:0.85rem
+}
+.placeholder-icon{font-size:1.5rem;margin-bottom:0.5rem;opacity:0.3}
+.placeholder-text{font-size:0.78rem;color:rgba(2,4,23,0.4);line-height:1.5}
+
+/* ── SIDEBAR ────────────────────────────────── */
+.sidebar{}
+
+/* Contact card */
+.contact-card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;margin-bottom:1.25rem
+}
+.contact-card-head{
+  background:var(--navy);padding:0.85rem 1.1rem;
+  display:flex;align-items:center;justify-content:space-between
+}
+.contact-card-title{font-family:var(--fd);font-size:1.1rem;font-weight:700;text-transform:uppercase;color:var(--bone);letter-spacing:0.04em}
+.contact-card-sub{font-size:0.65rem;color:rgba(245,241,234,0.45);letter-spacing:0.06em;text-transform:uppercase}
+.contact-clubs{padding:0.5rem 0}
+.club-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.65rem 1.1rem;border-bottom:1px solid rgba(2,4,23,0.06)
+}
+.club-row:last-child{border:none}
+.club-row-name{font-size:0.82rem;font-weight:600;color:var(--navy)}
+.club-row-address{font-size:0.7rem;color:rgba(2,4,23,0.45);margin-top:1px}
+.club-row-actions{display:flex;gap:0.4rem}
+.club-action{
+  display:inline-flex;align-items:center;gap:0.3rem;
+  font-size:0.68rem;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;
+  padding:0.3rem 0.65rem;border-radius:6px;text-decoration:none;
+  border:1.5px solid;transition:all 0.15s;white-space:nowrap
+}
+.ca-email{color:var(--navy);border-color:rgba(2,4,23,0.2)}
+.ca-email:hover{background:var(--navy);color:var(--bone)}
+.ca-wa{color:var(--moss);border-color:rgba(90,107,74,0.3)}
+.ca-wa:hover{background:var(--moss);color:#fff}
+.ca-coming{color:rgba(2,4,23,0.3);border-color:rgba(2,4,23,0.1);pointer-events:none;font-style:italic}
+
+/* Utility cards */
+.util-card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:1.1rem 1.25rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:1rem;text-decoration:none;
+  transition:all 0.18s;cursor:pointer
+}
+.util-card:hover{border-color:var(--navy);box-shadow:0 4px 16px rgba(2,4,23,0.07)}
+.util-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;flex-shrink:0
+}
+.ui-navy{background:var(--navy)}
+.ui-clay{background:var(--clay)}
+.ui-moss{background:rgba(90,107,74,0.12)}
+.ui-cream{background:var(--cream)}
+.util-text{}
+.util-title{font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:0.15rem}
+.util-sub{font-size:0.72rem;color:rgba(2,4,23,0.45);line-height:1.4}
+.util-arrow{font-size:0.8rem;color:rgba(2,4,23,0.3);margin-left:auto;flex-shrink:0}
+
+/* T&C card */
+.tc-card{
+  background:var(--navy);border-radius:12px;padding:1.25rem;margin-bottom:1rem;
+  display:flex;align-items:flex-start;gap:0.85rem;
+  text-decoration:none;transition:opacity 0.18s
+}
+.tc-card:hover{opacity:0.9}
+.tc-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.tc-title{font-family:var(--fd);font-size:1.1rem;font-weight:700;text-transform:uppercase;color:var(--bone);letter-spacing:0.03em;margin-bottom:0.25rem}
+.tc-desc{font-size:0.75rem;color:rgba(245,241,234,0.55);line-height:1.5}
+.tc-link{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--clay);display:inline-flex;align-items:center;gap:0.3rem;margin-top:0.5rem}
+
+/* WhatsApp CTA */
+.wa-card{
+  background:linear-gradient(135deg,#1a3a2a 0%,#0d2018 100%);
+  border-radius:12px;padding:1.25rem;margin-bottom:1rem
+}
+.wa-head{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.6rem}
+.wa-logo{font-size:1.5rem}
+.wa-title{font-family:var(--fd);font-size:1.1rem;font-weight:700;text-transform:uppercase;color:#fff;letter-spacing:0.03em}
+.wa-desc{font-size:0.75rem;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:1rem}
+.wa-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:#25D366;color:#fff;font-size:0.8rem;font-weight:600;
+  padding:0.6rem 1.1rem;border-radius:8px;text-decoration:none;
+  transition:opacity 0.15s
+}
+.wa-btn:hover{opacity:0.9}
+
+/* Photos card */
+.photos-card{
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1rem
+}
+.photos-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
+  background:var(--stone);height:120px
+}
+.photo-tile{
+  background:var(--cream);overflow:hidden;position:relative
+}
+.photo-tile::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(2,4,23,0.1),transparent)
+}
+.photo-tile:nth-child(1){background:linear-gradient(135deg,#c9a98a,#b89968)}
+.photo-tile:nth-child(2){background:linear-gradient(135deg,#131c4d,#020417)}
+.photo-tile:nth-child(3){background:linear-gradient(135deg,#ede6d8,#d9d2c2)}
+.photo-tile span{
+  position:absolute;bottom:4px;left:5px;z-index:1;
+  font-size:0.55rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.6)
+}
+.photos-foot{
+  padding:0.85rem 1rem;display:flex;align-items:center;justify-content:space-between;
+  background:#fff
+}
+.photos-foot-text{font-size:0.78rem;font-weight:500;color:var(--navy)}
+.photos-foot-sub{font-size:0.68rem;color:rgba(2,4,23,0.4)}
+.photos-link{
+  font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--navy);text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;
+  padding:0.4rem 0.85rem;border:1.5px solid var(--border);border-radius:6px;
+  transition:all 0.15s
+}
+.photos-link:hover{background:var(--navy);color:var(--bone);border-color:var(--navy)}
+
+/* ── ANNOUNCEMENTS ──────────────────────────── */
+.announcements{
+  background:#fff;border-bottom:1px solid var(--border);
+}
+.announcements-inner{
+  max-width:1200px;margin:0 auto;padding:0.75rem 2rem;
+  display:flex;flex-direction:column;gap:0.5rem
+}
+.ann-item{
+  display:flex;align-items:flex-start;gap:0.75rem;
+  padding:0.75rem 1rem;border-radius:10px;
+  border:1.5px solid;position:relative;
+  animation:fadeUp 0.4s ease both
+}
+.ann-item:nth-child(2){animation-delay:0.08s}
+
+/* Urgency variants */
+.ann-urgent{
+  background:rgba(184,98,58,0.06);border-color:rgba(184,98,58,0.25)
+}
+.ann-info{
+  background:rgba(2,4,23,0.03);border-color:rgba(2,4,23,0.12)
+}
+.ann-positive{
+  background:rgba(90,107,74,0.07);border-color:rgba(90,107,74,0.25)
+}
+
+.ann-icon{
+  font-size:1rem;flex-shrink:0;margin-top:1px;line-height:1
+}
+.ann-body{flex:1;min-width:0}
+.ann-header{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.2rem}
+.ann-tag{
+  font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px
+}
+.ann-tag-urgent{background:rgba(184,98,58,0.15);color:var(--rust)}
+.ann-tag-info{background:rgba(2,4,23,0.08);color:rgba(2,4,23,0.5)}
+.ann-tag-positive{background:rgba(90,107,74,0.12);color:var(--moss)}
+.ann-title{font-size:0.85rem;font-weight:600;color:var(--navy);line-height:1.3}
+.ann-desc{font-size:0.78rem;color:rgba(2,4,23,0.6);line-height:1.55}
+.ann-clubs{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.4rem}
+.ann-club-pill{
+  font-size:0.6rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;
+  padding:2px 7px;background:rgba(2,4,23,0.06);border-radius:4px;color:rgba(2,4,23,0.5)
+}
+.ann-date{
+  font-size:0.68rem;color:rgba(2,4,23,0.35);white-space:nowrap;
+  flex-shrink:0;margin-top:2px;font-variant-numeric:tabular-nums
+}
+.ann-dismiss{
+  position:absolute;top:0.5rem;right:0.6rem;
+  background:none;border:none;cursor:pointer;
+  font-size:0.75rem;color:rgba(2,4,23,0.2);
+  padding:4px;line-height:1;transition:color 0.15s
+}
+.ann-dismiss:hover{color:rgba(2,4,23,0.5)}
+.ann-empty{
+  font-size:0.78rem;color:rgba(2,4,23,0.35);padding:0.5rem 0;text-align:center;
+  font-style:italic
+}
+
+/* ── FOOTER ─────────────────────────────────── */
+footer{
+  background:var(--navy);padding:2rem;margin-top:2rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem
+}
+.footer-logo{font-family:var(--fd);font-weight:700;font-size:1.1rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--bone)}
+.footer-text{font-size:0.72rem;color:rgba(245,241,234,0.4);line-height:1.6}
+.footer-links{display:flex;gap:1.25rem}
+.footer-links a{font-size:0.7rem;color:rgba(245,241,234,0.45);text-decoration:none;transition:color 0.15s}
+.footer-links a:hover{color:var(--clay)}
+
+/* ── ANIMATIONS ─────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hero-inner>*{animation:fadeUp 0.5s ease both}
+.hero-eyebrow{animation-delay:0.05s}
+.hero-title{animation-delay:0.12s}
+.hero-desc{animation-delay:0.2s}
+.hero-pills{animation-delay:0.28s}
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media(max-width:700px){
+  .topbar-nav{display:none}
+  .hero{padding:2.5rem 1.25rem 2rem}
+  .main{padding:1.5rem 1.25rem}
+  .quick-inner{padding:1rem 1.25rem}
+  footer{flex-direction:column;gap:0.75rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOPBAR ──────────────────────────────────────────── -->
+<header class="topbar">
+  <a href="#" class="topbar-logo">UNTIL</a>
+  <nav class="topbar-nav">
+    <a href="#faqs">FAQs</a>
+    <a href="#newsletters">Newsletter</a>
+    <a href="#contact">Contact</a>
+    <a href="#resources">Resources</a>
+  </nav>
+  <span class="topbar-club" id="club-label">Member Hub</span>
+</header>
+
+<!-- ── HERO ───────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Member Hub · Everything you need in one place</div>
+    <h1 class="hero-title">Your<br><em>UNTIL</em><br>Dashboard.</h1>
+    <p class="hero-desc">FAQs, club contacts, community, newsletters and resources — all in one place. Bookmark this page.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">📍 <strong>4 London clubs</strong></span>
+      <span class="hero-pill">🏋️ <strong>850+ practitioners</strong></span>
+      <span class="hero-pill">✦ <strong>Multisite access</strong></span>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUICK ACTIONS ──────────────────────────────────── -->
+<div class="quick">
+  <div class="quick-inner">
+    <span class="quick-label">Quick links</span>
+    <a href="#faqs" class="qa"><span class="qa-icon">❓</span> FAQs</a>
+    <a href="https://www.notion.so/wellnesshouse/MEMBERSHIP-T-C-S-9e305cf210634d16b33ae11eff262b7b" target="_blank" class="qa"><span class="qa-icon">📄</span> T&amp;Cs</a>
+    <a href="#contact" class="qa"><span class="qa-icon">💬</span> Contact a club</a>
+    <a href="#newsletters" class="qa"><span class="qa-icon">📬</span> Newsletter</a>
+    <a href="#photos" class="qa"><span class="qa-icon">📷</span> Club photos</a>
+    <a href="#whatsapp" class="qa qa-primary"><span class="qa-icon">🟢</span> Join WhatsApp</a>
+  </div>
+</div>
+
+<!-- ── ANNOUNCEMENTS ──────────────────────────────────── -->
+<div class="announcements" id="announcements-bar">
+  <div class="announcements-inner" id="ann-list">
+    <!-- Announcements render here via JS -->
+  </div>
+</div>
+
+<!-- ── MAIN ───────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
+
+    <!-- FAQs -->
+    <div class="module" id="faqs">
+      <div class="section-head">
+        <h2 class="section-title">FAQs</h2>
+        <span class="section-count">20 questions</span>
+      </div>
+
+      <!-- BOOKING & APP -->
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(2,4,23,0.35);margin:1.25rem 0 0.5rem">Booking &amp; App</div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-app">App</span>How do I book a space?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Open the UNTIL app → tap <strong>Book a Space</strong> → select your date, time and room type. All sessions must be booked before you or your client arrives. Credits are deducted from your balance at the time of booking.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-app">App</span>How do I add a guest / client to my booking?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">When making or editing a booking in the app, there is a guest field — add your client's name and email address. Every client must be registered before they arrive. On their first visit they'll complete a guest check-in form at the desk. Failure to register guests may result in access being refused.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-app">App</span>How do I buy more credits?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">In the UNTIL app, go to your account → Credits → Buy credits. Select the credit pack that suits you. Credits are applied to your account immediately. Note: credits do not roll over between monthly billing periods.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-app">App</span>Can I use the gym for personal training?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Yes — all members can use the gym, but this requires FOH approval on the day and must be booked with the club team. It is not self-serve through the app. Please check with FOH before entering the gym outside of a booked client session. The gym must be under 60% occupancy. Misuse without approval will result in a written warning.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-app">App</span>What is Salto and how do I use it?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Salto is UNTIL's digital key system. When you book a space, Salto automatically unlocks that room for your booking window. Hold your phone to the Salto reader on the door to enter. You only have access to the spaces you have booked — access expires at the end of your session. If you're having issues with access, speak to FOH immediately.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-app">App</span>Can I use other UNTIL clubs?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Yes. Your membership gives you multisite access across all four UNTIL clubs — Soho, Marylebone, Liverpool Street, and Canary Wharf. Simply book through the app and select your preferred club location.</div>
+      </div>
+
+      <!-- MEMBERSHIP & BILLING -->
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(2,4,23,0.35);margin:1.5rem 0 0.5rem">Membership &amp; Billing</div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-billing">Billing</span>When does my membership renew?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Your membership renews monthly on the date your membership started. You can check your renewal date in the UNTIL app under your account settings. Payment is taken automatically via direct debit.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-billing">Billing</span>How do I pause my membership?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">You can pause your membership through the UNTIL app. Go to your account → Membership → Pause. Pauses are subject to the terms in your membership agreement. If you're unsure, contact your club team directly before making any changes.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-billing">Billing</span>How do I cancel my membership?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Cancellation requests must be submitted through the app or in writing to your club team. Notice periods apply as per your membership T&Cs. Please review your agreement before cancelling — we'd also love to understand why, so if there's anything we can help with, speak to your Community Lead first.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-billing">Billing</span>How does storage pricing work?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Storage is available at all four clubs on a monthly rolling basis and is prioritised for members doing 10+ hours per week. Prices vary by club and storage type (lockers, floor space, medical fridge, dental cupboards). Contact your club GM to check availability and pricing. Storage is invoiced separately from your membership.</div>
+      </div>
+
+      <!-- SPACE & ETIQUETTE -->
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(2,4,23,0.35);margin:1.5rem 0 0.5rem">Space &amp; Etiquette</div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-space">Space</span>Can I film content at UNTIL?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Filming on the gym floor requires prior permission from the site team on each occasion. Treatment and coach rooms can be booked for content filming — please let your GM know if you're bringing non-members in. Dental surgery filming also requires club team permission for any public space filming. General filming of other members or clients is strictly prohibited without their consent.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-space">Space</span>What do I do if a room isn't how I expected it?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Tell FOH immediately. Don't just clean it up yourself — we need to log it and follow up with the previous member. This protects you (it won't be attributed to you) and helps us maintain standards across the club.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-space">Space</span>My client is running late — can I extend my booking?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">On the gym floor, sessions end on time regardless of late arrivals — the team cannot extend if it impacts the next booking. In treatment and coach rooms, contact the team as soon as possible and we'll try to move you to another available room or extend where we can. For dental surgeries, sessions always end on time.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-space">Space</span>What happens if I break or damage something?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Report any breakages, damage, or missing items to FOH immediately. This applies to gym equipment, room fixtures, dental instruments, and anything else in the club. We don't expect perfection — accidents happen — but transparency matters.</div>
+      </div>
+
+      <!-- COMMUNITY -->
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(2,4,23,0.35);margin:1.5rem 0 0.5rem">Community &amp; Growth</div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-community">Community</span>How do I get involved in UNTIL events?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Events are shared in the bi-weekly member newsletter, the WhatsApp community, and via the club teams. All events are hosted on Luma — find our events at <a href="https://lu.ma/until" target="_blank">lu.ma/until</a>. If you'd like to speak at, co-host, or suggest an event, speak to your Community Lead.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-community">Community</span>What is Health Concierge?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Health Concierge is UNTIL's client-matching service, run by Hayley. If you're ready to take on new clients, Hayley will match UNTIL members and prospective clients to practitioners based on specialism, availability and location. To get set up, speak to your Community Lead or contact Hayley directly through the club team.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text"><span class="faq-tag tag-community">Community</span>What is Growth Services and how do I access it?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-a">Growth Services is UNTIL's practitioner business growth programme, run by James Morrissey. It includes a free Business Audit (your visibility on Google, AI tools, and social), Website &amp; SEO from £150/month, and a Business Mastermind cohort. To get started with a free audit, speak to your Community Lead or any club team member.</div>
+      </div>
+    </div>
+
+    <!-- NEWSLETTERS -->
+    <div class="module" id="newsletters">
+      <div class="section-head">
+        <h2 class="section-title">Newsletter</h2>
+        <span class="section-count">Coming soon</span>
+      </div>
+      <div class="newsletter-placeholder">
+        <div class="placeholder-icon">📬</div>
+        <div class="placeholder-text"><strong style="color:rgba(2,4,23,0.6);display:block;margin-bottom:0.25rem">Newsletters launching soon</strong>The UNTIL bi-weekly newsletter will appear here when it relaunches — community highlights, upcoming events, partner updates, and things worth knowing.</div>
+      </div>
+      <div class="newsletter-placeholder">
+        <div class="placeholder-icon">📬</div>
+        <div class="placeholder-text" style="color:rgba(2,4,23,0.25)">Issue 2 will appear here</div>
+      </div>
+      <div class="newsletter-placeholder">
+        <div class="placeholder-icon">📬</div>
+        <div class="placeholder-text" style="color:rgba(2,4,23,0.2)">Issue 1 will appear here</div>
+      </div>
+      <p style="font-size:0.75rem;color:rgba(2,4,23,0.4);margin-top:0.75rem;line-height:1.6">Newsletters are sent bi-weekly via email. Make sure your email preferences are up to date in the app so you don't miss them.</p>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN / SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- T&Cs -->
+    <a href="https://www.notion.so/wellnesshouse/MEMBERSHIP-T-C-S-9e305cf210634d16b33ae11eff262b7b" target="_blank" class="tc-card" id="resources">
+      <div class="tc-icon">📋</div>
+      <div>
+        <div class="tc-title">Membership T&Cs</div>
+        <div class="tc-desc">Your full membership terms and conditions — covering booking rules, cancellation, conduct, and everything in between. Agreed at digital onboarding.</div>
+        <div class="tc-link">Read the full T&Cs →</div>
+      </div>
+    </a>
+
+    <!-- WhatsApp -->
+    <div class="wa-card" id="whatsapp">
+      <div class="wa-head">
+        <div class="wa-logo">💬</div>
+        <div class="wa-title">WhatsApp Community</div>
+      </div>
+      <div class="wa-desc">Connect with 850+ practitioners across all four clubs. Introduce yourself, share insights, ask questions, and find collaborators. The link will be in your welcome email — or ask your club team.</div>
+      <a href="#" class="wa-btn">
+        <span>Join the community</span>
+        <span>→</span>
+      </a>
+    </div>
+
+    <!-- Club photos -->
+    <div class="photos-card" id="photos">
+      <div class="photos-grid">
+        <div class="photo-tile"><span>Soho</span></div>
+        <div class="photo-tile"><span>MLB</span></div>
+        <div class="photo-tile"><span>LST</span></div>
+      </div>
+      <div class="photos-foot">
+        <div>
+          <div class="photos-foot-text">Club Photography</div>
+          <div class="photos-foot-sub">Brand assets, club photography, space images</div>
+        </div>
+        <a href="#" class="photos-link">Dropbox →</a>
+      </div>
+    </div>
+
+    <!-- Club contacts -->
+    <div class="contact-card" id="contact">
+      <div class="contact-card-head">
+        <div>
+          <div class="contact-card-title">Club Teams</div>
+          <div class="contact-card-sub">Email or message your club directly</div>
+        </div>
+      </div>
+      <div class="contact-clubs">
+        <div class="club-row">
+          <div>
+            <div class="club-row-name">Soho</div>
+            <div class="club-row-address">111 Charing Cross Rd, WC2H</div>
+          </div>
+          <div class="club-row-actions">
+            <a href="mailto:soho@until.co.uk" class="club-action ca-email">✉ Email</a>
+            <span class="club-action ca-coming">WA soon</span>
+          </div>
+        </div>
+        <div class="club-row">
+          <div>
+            <div class="club-row-name">Marylebone</div>
+            <div class="club-row-address">1 Orchard Street, W1H</div>
+          </div>
+          <div class="club-row-actions">
+            <a href="mailto:marylebone@until.co.uk" class="club-action ca-email">✉ Email</a>
+            <span class="club-action ca-coming">WA soon</span>
+          </div>
+        </div>
+        <div class="club-row">
+          <div>
+            <div class="club-row-name">Liverpool Street</div>
+            <div class="club-row-address">280 Bishops Square, EC2M</div>
+          </div>
+          <div class="club-row-actions">
+            <a href="mailto:liverpoolstreet@until.co.uk" class="club-action ca-email">✉ Email</a>
+            <span class="club-action ca-coming">WA soon</span>
+          </div>
+        </div>
+        <div class="club-row">
+          <div>
+            <div class="club-row-name">Canary Wharf</div>
+            <div class="club-row-address">30 South Colonnade, E14</div>
+          </div>
+          <div class="club-row-actions">
+            <a href="mailto:canarywharf@until.co.uk" class="club-action ca-email">✉ Email</a>
+            <span class="club-action ca-coming">WA soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other resources -->
+    <div style="font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(2,4,23,0.35);margin-bottom:0.75rem;margin-top:0.25rem">More resources</div>
+    <a href="https://lu.ma/until" target="_blank" class="util-card">
+      <div class="util-icon ui-navy"><span style="font-size:1.1rem">🎟</span></div>
+      <div class="util-text">
+        <div class="util-title">Events</div>
+        <div class="util-sub">Browse and register for upcoming UNTIL events on Luma</div>
+      </div>
+      <div class="util-arrow">→</div>
+    </a>
+    <div class="util-card" style="opacity:0.6;cursor:default" title="Coming soon">
+      <div class="util-icon ui-clay"><span style="font-size:1.1rem">🌐</span></div>
+      <div class="util-text">
+        <div class="util-title">Growth Services</div>
+        <div class="util-sub">Business audit, website, SEO — speak to your CL to get started</div>
+      </div>
+      <div class="util-arrow" style="font-size:0.68rem;color:rgba(2,4,23,0.25)">Ask CL</div>
+    </div>
+    <div class="util-card" style="opacity:0.6;cursor:default">
+      <div class="util-icon ui-moss"><span style="font-size:1.1rem">🏥</span></div>
+      <div class="util-text">
+        <div class="util-title">Health Concierge</div>
+        <div class="util-sub">Client matching programme — speak to your Community Lead</div>
+      </div>
+      <div class="util-arrow" style="font-size:0.68rem;color:rgba(2,4,23,0.25)">Ask CL</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">UNTIL</div>
+  <div class="footer-text">
+    Unleash the Full Potential of Practitioners.<br>
+    When practitioners thrive, everyone benefits.
+  </div>
+  <div class="footer-links">
+    <a href="https://until.co.uk" target="_blank">Website</a>
+    <a href="https://www.notion.so/wellnesshouse/MEMBERSHIP-T-C-S-9e305cf210634d16b33ae11eff262b7b" target="_blank">T&Cs</a>
+    <a href="mailto:hello@until.co.uk">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ── ANNOUNCEMENTS ───────────────────────────────────────
+// To update: edit the ANNOUNCEMENTS array below.
+// type: 'urgent' | 'info' | 'positive'
+// clubs: array of club names, or ['All clubs']
+// expires: date string — announcement auto-hides after this date
+const ANNOUNCEMENTS = [
+  {
+    id: 'ann-1',
+    type: 'urgent',
+    icon: '🔥',
+    tag: 'Fire drill',
+    title: 'Scheduled fire evacuation — Marylebone',
+    desc: 'Wednesday 30 April, 9:00–9:30am. The building will be evacuated for a scheduled fire drill. Please muster at Wagamama, Wigmore Street. Plan your sessions around this window.',
+    clubs: ['Marylebone'],
+    date: 'Wed 30 Apr',
+    expires: '2026-04-30'
+  },
+  {
+    id: 'ann-2',
+    type: 'info',
+    icon: '🕐',
+    tag: 'Bank holiday hours',
+    title: 'Adjusted hours — Early May bank holiday',
+    desc: 'Monday 5 May all clubs open 7am–3pm. Book sessions accordingly. Normal hours resume Tuesday 6 May.',
+    clubs: ['All clubs'],
+    date: 'Mon 5 May',
+    expires: '2026-05-05'
+  }
+];
+
+function renderAnnouncements(){
+  const list = document.getElementById('ann-list');
+  const bar = document.getElementById('announcements-bar');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dismissed = JSON.parse(sessionStorage.getItem('until-dismissed') || '[]');
+
+  const active = ANNOUNCEMENTS.filter(a => {
+    if(dismissed.includes(a.id)) return false;
+    if(a.expires){
+      const exp = new Date(a.expires); exp.setHours(23,59,59);
+      if(today > exp) return false;
+    }
+    return true;
+  }).slice(0,2); // max 2 shown
+
+  if(active.length === 0){
+    bar.style.display = 'none';
+    return;
+  }
+
+  list.innerHTML = active.map(a => {
+    const tagClass = `ann-tag-${a.type}`;
+    const itemClass = `ann-${a.type}`;
+    const clubPills = a.clubs.map(c =>
+      `<span class="ann-club-pill">${c}</span>`
+    ).join('');
+    return `
+      <div class="ann-item ${itemClass}" id="${a.id}">
+        <div class="ann-icon">${a.icon}</div>
+        <div class="ann-body">
+          <div class="ann-header">
+            <span class="ann-tag ${tagClass}">${a.tag}</span>
+            <span class="ann-title">${a.title}</span>
+          </div>
+          <div class="ann-desc">${a.desc}</div>
+          <div class="ann-clubs">${clubPills}</div>
+        </div>
+        <div class="ann-date">${a.date}</div>
+        <button class="ann-dismiss" onclick="dismissAnn('${a.id}')" title="Dismiss">✕</button>
+      </div>`;
+  }).join('');
+}
+
+function dismissAnn(id){
+  const el = document.getElementById(id);
+  if(el){ el.style.opacity='0'; el.style.transition='opacity 0.2s'; setTimeout(()=>{ el.remove(); checkEmpty(); },200); }
+  const dismissed = JSON.parse(sessionStorage.getItem('until-dismissed') || '[]');
+  dismissed.push(id);
+  sessionStorage.setItem('until-dismissed', JSON.stringify(dismissed));
+}
+
+function checkEmpty(){
+  const list = document.getElementById('ann-list');
+  if(!list.querySelector('.ann-item')){
+    document.getElementById('announcements-bar').style.display='none';
+  }
+}
+
+renderAnnouncements();
+
+// ── FAQ ──────────────────────────────────────────────────
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>{
+    if(i!==item)i.classList.remove('open');
+  });
+  item.classList.toggle('open',!wasOpen);
+}
+
+// Smooth active state for nav links
+document.querySelectorAll('.topbar-nav a').forEach(a=>{
+  a.addEventListener('click',function(){
+    document.querySelectorAll('.topbar-nav a').forEach(x=>x.style.fontWeight='');
+    this.style.fontWeight='600';
+    this.style.color='var(--navy)';
+  });
+});
+
+// Highlight club label from URL param (for future personalisation)
+const params=new URLSearchParams(window.location.search);
+const club=params.get('club');
+if(club){
+  document.getElementById('club-label').textContent=club;
+}
+</script>
+</body>
+</html>
